@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listViewDS;
     EditText editTextQT;
-    Button buttonAdd, buttonEdit;
+    Button buttonAdd, buttonEdit, buttonDelete, buttonSearch;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -46,6 +46,38 @@ public class MainActivity extends AppCompatActivity {
                 adt.notifyDataSetChanged();
             }
         });
+        listViewDS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int val = position;
+                editTextQT.setText(arr.get(position));
+                buttonEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        arr.set(position, editTextQT.getText().toString());
+                        adt.notifyDataSetChanged();
+                    }
+                });
+                buttonDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        arr.remove(position);
+                        adt.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = editTextQT.getText().toString();
+                if(arr.contains(s))
+                {
+                    Toast.makeText(MainActivity.this, "Co tu nhaaa!!", Toast.LENGTH_SHORT).show();
+                }
+                else Toast.makeText(MainActivity.this, "Khong co!!", Toast.LENGTH_SHORT).show();
+            }
+        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -58,5 +90,7 @@ public class MainActivity extends AppCompatActivity {
         editTextQT = (EditText) findViewById(R.id.editTextQT);
         buttonAdd = (Button) findViewById(R.id.buttonOK);
         buttonEdit = (Button) findViewById(R.id.buttonEdit);
+        buttonDelete = (Button) findViewById(R.id.buttonDelete);
+        buttonSearch = (Button) findViewById(R.id.buttonSearch);
     }
 }
